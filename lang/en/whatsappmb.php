@@ -34,6 +34,10 @@ $string['whatsappmb:addinstance'] = 'Add a new WhatsApp instance';
 $string['whatsappmb:view'] = 'View WhatsApp';
 $string['invalidwhatsappid'] = 'Invalid WhatsApp activity. Please contact your instructor.';
 
+$string['invalidnumber'] = 'Please enter a valid phone number in international format (e.g., +1234567890).';
+$string['invalidgrouplink'] = 'Please enter a valid WhatsApp group link (e.g., https://chat.whatsapp.com/XXXXXXX).';
+
+
 $string['privacy:metadata:none'] = 'This plugin does not store personal information.';
 
 

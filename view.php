@@ -24,25 +24,30 @@
 require_once('../../config.php');
 require_once('lib.php');
 
-// Retrieve the required course module ID from the request.
 $id = required_param('id', PARAM_INT);
 
-// Get the course module data from the database.
 $cm = get_coursemodule_from_id('whatsappmb', $id, 0, false, MUST_EXIST);
-
-// Retrieve the course record from the database.
 $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
-
-// Retrieve the WhatsAppMB module instance from the database.
 $whatsappmb = $DB->get_record('whatsappmb', ['id' => $cm->instance], '*', MUST_EXIST);
 
-// Ensure the user is logged in and has access to the course module.
 require_login($course, true, $cm);
 
-// Build the WhatsApp link using the configured phone number and message.
-$number = $whatsappmb->whatsappnumber; // WhatsApp phone number.
-$message = urlencode($whatsappmb->message); // Predefined message.
-$whatsapp_link = "https://wa.me/{$number}?text={$message}";
+// Determine whether to use a personal number or a group link
+if ($whatsappmb->linktype === 'personal') {
+    $number = trim($whatsappmb->whatsappnumber);
+    $message = urlencode(trim($whatsappmb->message));
+    $whatsapp_link = "https://wa.me/{$number}?text={$message}";
+} else {
+    // If the link type is group, use the provided group link
+    $grouplink = trim($whatsappmb->grouplink);
+    
+    // Ensure the group link is correctly formatted
+    if (!preg_match("~^(?:f|ht)tps?://~i", $grouplink)) {
+        $grouplink = "https://" . $grouplink;
+    }
 
-// Redirect the user directly to the WhatsApp link.
+    $whatsapp_link = $grouplink;
+}
+
+// Redirect to the correct WhatsApp link
 redirect($whatsapp_link);
