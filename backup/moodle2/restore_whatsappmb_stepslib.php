@@ -19,7 +19,7 @@
  *
  * @package   mod_whatsappmb
  * @copyright 2025 Marcial Cahuaya
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -34,7 +34,7 @@ class restore_whatsappmb_activity_structure_step extends restore_activity_struct
      * Define the structure for restoring the whatsappmb activity.
      */
     protected function define_structure() {
-        $paths = array();
+        $paths = [];
         $paths[] = new restore_path_element('whatsappmb', '/activity/whatsappmb');
 
         // Agrega más elementos si tu actividad tiene subdatos, como configuraciones adicionales o archivos.

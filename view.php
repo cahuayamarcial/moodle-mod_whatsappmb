@@ -19,7 +19,7 @@
  *
  * @package   mod_whatsappmb
  * @copyright 2025 Marcial Cahuaya | Marbot
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once('../../config.php');
 require_once('lib.php');
@@ -36,7 +36,7 @@ require_login($course, true, $cm);
 if ($whatsappmb->linktype === 'personal') {
     $number = trim($whatsappmb->whatsappnumber);
     $message = urlencode(trim($whatsappmb->message));
-    $whatsapp_link = "https://wa.me/{$number}?text={$message}";
+    $whatsapplink = "https://wa.me/{$number}?text={$message}";
 } else {
     // If the link type is group, use the provided group link
     $grouplink = trim($whatsappmb->grouplink);
@@ -46,8 +46,8 @@ if ($whatsappmb->linktype === 'personal') {
         $grouplink = "https://" . $grouplink;
     }
 
-    $whatsapp_link = $grouplink;
+    $whatsapplink = $grouplink;
 }
 
 // Redirect to the correct WhatsApp link
-redirect($whatsapp_link);
+redirect($whatsapplink);
