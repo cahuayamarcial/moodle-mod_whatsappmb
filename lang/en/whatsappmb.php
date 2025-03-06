@@ -32,6 +32,10 @@ $string['personalnumber'] = 'Personal Number';
 $string['grouplink'] = 'Group Link';
 $string['whatsappmb:addinstance'] = 'Add a new WhatsApp instance';
 $string['whatsappmb:view'] = 'View WhatsApp';
+$string['invalidwhatsappid'] = 'Invalid WhatsApp activity. Please contact your instructor.';
 
 $string['privacy:metadata:none'] = 'This plugin does not store personal information.';
+
+
+
 

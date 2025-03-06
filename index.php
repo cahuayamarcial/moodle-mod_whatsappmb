@@ -17,15 +17,32 @@
 /**
  * Index file for mod_whatsappmb.
  *
+ * This file is responsible for handling direct access to the module's index page.
+ * If accessed without a valid course ID, it displays an error message.
+ *
  * @package   mod_whatsappmb
  * @copyright 2025 Marcial Cahuaya | Marbot
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 require_once('../../config.php');
+
+$id = optional_param('id', 0, PARAM_INT); // Safely retrieve the course ID from request parameters.
+
 require_login();
 
-// Si alguien intenta abrir la página, lo redirigimos al curso
-redirect($CFG->wwwroot . '/course/view.php?id=' . required_param('id', PARAM_INT));
+// Set up the page configuration.
+$PAGE->set_url('/mod/whatsappmb/index.php', ['id' => $id]);
+$PAGE->set_context(context_system::instance());
+$PAGE->set_heading(get_string('pluginname', 'mod_whatsappmb'));
+
+if ($id > 0) {
+    // Redirect to the activity view page if a valid ID is provided.
+    redirect(new moodle_url('/mod/whatsappmb/view.php', ['id' => $id]));
+} else {
+    // Display an error message if no valid ID is found.
+    echo $OUTPUT->header();
+    echo $OUTPUT->notification(get_string('invalidwhatsappid', 'mod_whatsappmb'), 'notifyproblem');
+    echo $OUTPUT->footer();
+    die();
+}
