@@ -39,7 +39,3 @@ $string['invalidgrouplink'] = 'Please enter a valid WhatsApp group link (e.g., h
 
 
 $string['privacy:metadata:none'] = 'This plugin does not store personal information.';
-
-
-
-

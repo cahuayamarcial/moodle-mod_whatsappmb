@@ -40,4 +40,3 @@ $string['invalidgrouplink'] = 'Por favor, ingrese un enlace válido de grupo de 
 
 
 $string['privacy:metadata:none'] = 'Este complemento no almacena información personal.';
-

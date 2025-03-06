@@ -51,4 +51,3 @@ class backup_whatsappmb_activity_structure_step extends backup_activity_structur
         return $this->prepare_activity_structure($whatsappmb);
     }
 }
-
