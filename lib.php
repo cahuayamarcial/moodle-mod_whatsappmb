@@ -119,9 +119,36 @@ function whatsappmb_get_coursemodule_info($coursemodule) {
  */
 function whatsappmb_supports($feature) {
     switch ($feature) {
+        case FEATURE_IDNUMBER:
+            return true; // Allows ID numbers for course modules.
+
+        case FEATURE_GROUPS:
+        case FEATURE_GROUPINGS:
+            return false; // This module does not support groups.
+
+        case FEATURE_MOD_INTRO:
+            return true; // Supports an introductory text.
+
+        case FEATURE_COMPLETION_TRACKS_VIEWS:
+            return false; // No tracking of views for completion.
+
+        case FEATURE_GRADE_HAS_GRADE:
+        case FEATURE_GRADE_OUTCOMES:
+            return false; // No grading in this module.
+
+        case FEATURE_MOD_ARCHETYPE:
+            return MOD_ARCHETYPE_RESOURCE; // This module behaves like a resource.
+
         case FEATURE_BACKUP_MOODLE2:
-            return true; // Indica que el plugin soporta backup/restore.
+            return true; // Supports Moodle backup and restore.
+
+        case FEATURE_NO_VIEW_LINK:
+            return true; // This module does not require a separate view page.
+
+        case FEATURE_MOD_PURPOSE:
+            return MOD_PURPOSE_COMMUNICATION; // Categorized as a communication module.
+
         default:
-            return null; // Para otras características, devuelve null.
+            return null; // Unknown feature.
     }
 }
