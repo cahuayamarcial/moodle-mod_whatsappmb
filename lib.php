@@ -112,15 +112,15 @@ function whatsappmb_get_coursemodule_info($coursemodule) {
 }
 
 /**
- * Indicates that the module supports backup and restore.
+ * Indicates the features supported by the WhatsAppMB module.
  *
  * @param string $feature The feature to check.
- * @return bool|null True if the feature is supported, null otherwise.
+ * @return bool|null True if supported, false if not, null if undefined.
  */
 function whatsappmb_supports($feature) {
     switch ($feature) {
         case FEATURE_IDNUMBER:
-            return true; // Allows ID numbers for course modules.
+            return true; // Allows identification numbers for course modules.
 
         case FEATURE_GROUPS:
         case FEATURE_GROUPINGS:
@@ -130,25 +130,28 @@ function whatsappmb_supports($feature) {
             return true; // Supports an introductory text.
 
         case FEATURE_COMPLETION_TRACKS_VIEWS:
-            return false; // No tracking of views for completion.
+            return false; // Does not track views for completion.
 
         case FEATURE_GRADE_HAS_GRADE:
         case FEATURE_GRADE_OUTCOMES:
-            return false; // No grading in this module.
+            return false; // This module does not support grading.
 
         case FEATURE_MOD_ARCHETYPE:
-            return MOD_ARCHETYPE_RESOURCE; // This module behaves like a resource.
+            return MOD_ARCHETYPE_OTHER; // Behaves as another type of activity, not just a resource.
 
         case FEATURE_BACKUP_MOODLE2:
-            return true; // Supports Moodle backup and restore.
+            return true; // Supports backup and restore in Moodle 2.
 
         case FEATURE_NO_VIEW_LINK:
-            return true; // This module does not require a separate view page.
+            return false; // Now requires a view page.
+
+        case FEATURE_SHOW_DESCRIPTION:
+            return true; // Displays the description on the course page.
 
         case FEATURE_MOD_PURPOSE:
             return MOD_PURPOSE_COMMUNICATION; // Categorized as a communication module.
 
         default:
-            return null; // Unknown feature.
+            return null; // For undefined features.
     }
 }
