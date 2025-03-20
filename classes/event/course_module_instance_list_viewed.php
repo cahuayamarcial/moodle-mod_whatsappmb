@@ -15,14 +15,28 @@
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details for the mod_whatsappmb plugin.
+ * Event for viewing the list of WhatsAppMB instances in a course.
  *
  * @package   mod_whatsappmb
  * @copyright 2025 Marcial Cahuaya | Marbot
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$plugin->version   = 2025032017;
-$plugin->requires  = 2016052300; // Minimum required Moodle version (3.1+).
-$plugin->component = 'mod_whatsappmb';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.0.2';
+
+namespace mod_whatsappmb\event;
+
+defined('MOODLE_INTERNAL') || die();
+
+class course_module_instance_list_viewed extends \core\event\course_module_instance_list_viewed {
+    protected function init() {
+        $this->data['crud'] = 'r';
+        $this->data['edulevel'] = self::LEVEL_OTHER;
+    }
+
+    public static function get_objectid_mapping() {
+        return false; // This event does not relate to a specific object.
+    }
+
+    public function get_description() {
+        return "The user with id {$this->userid} viewed the list of WhatsAppMB instances in course {$this->courseid}.";
+    }
+}

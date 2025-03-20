@@ -15,27 +15,38 @@
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Language strings for the WhatsApp by Marbot plugin.
+ * English language strings for the WhatsApp by Marbot plugin.
  *
  * @package   mod_whatsappmb
  * @copyright 2025 Marcial Cahuaya | Marbot
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 $string['pluginname'] = 'WhatsApp by Marbot';
+$string['modulename'] = 'WhatsApp';
+$string['modulenameplural'] = 'WhatsApps';
+$string['whatsappmbname'] = 'WhatsApp activity name';
+$string['pluginadministration'] = 'WhatsApp Administration';
+
 $string['whatsappnumber'] = 'WhatsApp Number';
 $string['message'] = 'Default Message';
-$string['modulename'] = 'WhatsApp';
-$string['modulenameplural'] = 'WhatsApp';
-$string['pluginadministration'] = 'WhatsApp Administration';
 $string['linktype'] = 'Link Type';
 $string['personalnumber'] = 'Personal Number';
 $string['grouplink'] = 'Group Link';
-$string['whatsappmb:addinstance'] = 'Add a new WhatsApp instance';
-$string['whatsappmb:view'] = 'View WhatsApp';
-$string['invalidwhatsappid'] = 'Invalid WhatsApp activity. Please contact your instructor.';
-
 $string['invalidnumber'] = 'Please enter a valid phone number in international format (e.g., +1234567890).';
 $string['invalidgrouplink'] = 'Please enter a valid WhatsApp group link (e.g., https://chat.whatsapp.com/XXXXXXX).';
 
+$string['whatsappmb:addinstance'] = 'Add a new WhatsApp instance';
+$string['whatsappmb:view'] = 'View WhatsApp';
+
+$string['invalidwhatsappid'] = 'Invalid WhatsApp activity. Please contact your instructor.';
+$string['noinstances'] = 'There are no WhatsApp instances in this course.';
+$string['nocourses'] = 'There are no courses with WhatsApp instances.';
+$string['courseswithwhatsappmb'] = 'Courses with WhatsApp instances';
+$string['coursename'] = 'Course name';
+
+$string['lastmodified'] = 'Last modified';
 
 $string['privacy:metadata:none'] = 'This plugin does not store personal information.';
+
+$string['required'] = 'This field is required.';

@@ -15,7 +15,7 @@
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Redirects users to a WhatsApp link based on the configured phone number and message.
+ * Redirects users to a WhatsApp link.
  *
  * @package   mod_whatsappmb
  * @copyright 2025 Marcial Cahuaya | Marbot
@@ -34,22 +34,28 @@ require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 require_capability('mod/whatsappmb:view', $context);
 
+// Log the course module view
+$event = \mod_whatsappmb\event\course_module_viewed::create([
+    'objectid' => $whatsappmb->id,
+    'context' => $context,
+    'courseid' => $course->id
+]);
+$event->add_record_snapshot('course', $course);
+$event->add_record_snapshot('whatsappmb', $whatsappmb);
+$event->trigger();
+
 // Determine whether to use a personal number or a group link
 if ($whatsappmb->linktype === 'personal') {
     $number = trim($whatsappmb->whatsappnumber);
     $message = urlencode(trim($whatsappmb->message));
     $whatsapplink = "https://wa.me/{$number}?text={$message}";
 } else {
-    // If the link type is group, use the provided group link
     $grouplink = trim($whatsappmb->grouplink);
-    
-    // Ensure the group link is correctly formatted
     if (!preg_match("~^(?:f|ht)tps?://~i", $grouplink)) {
         $grouplink = "https://" . $grouplink;
     }
-
     $whatsapplink = $grouplink;
 }
 
-// Redirect to the correct WhatsApp link
+// Redirect to the WhatsApp link in the same tab
 redirect($whatsapplink);

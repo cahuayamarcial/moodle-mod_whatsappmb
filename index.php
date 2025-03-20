@@ -17,8 +17,7 @@
 /**
  * Index file for mod_whatsappmb.
  *
- * This file is responsible for handling direct access to the module's index page.
- * If accessed without a valid course ID, it displays an error message.
+ * Displays a list of WhatsAppMB instances, either for a specific course or across all courses.
  *
  * @package   mod_whatsappmb
  * @copyright 2025 Marcial Cahuaya | Marbot
@@ -27,22 +26,91 @@
 
 require_once('../../config.php');
 
-$id = optional_param('id', 0, PARAM_INT); // Safely retrieve the course ID from request parameters.
+$id = optional_param('id', 0, PARAM_INT); // Course ID is optional.
 
 require_login();
 
-// Set up the page configuration.
+$systemcontext = context_system::instance();
+
+// Set up the page
 $PAGE->set_url('/mod/whatsappmb/index.php', ['id' => $id]);
-$PAGE->set_context(context_system::instance());
+$PAGE->set_context($systemcontext);
+$PAGE->set_pagelayout('incourse');
+$PAGE->set_title(get_string('pluginname', 'mod_whatsappmb'));
 $PAGE->set_heading(get_string('pluginname', 'mod_whatsappmb'));
 
-if ($id > 0) {
-    // Redirect to the activity view page if a valid ID is provided.
-    redirect(new moodle_url('/mod/whatsappmb/view.php', ['id' => $id]));
+echo $OUTPUT->header();
+
+if ($id) {
+    // Case 1: A specific course ID is provided
+    $course = $DB->get_record('course', ['id' => $id], '*', MUST_EXIST);
+    $coursecontext = context_course::instance($course->id);
+
+    // Log the course module instance list viewed event
+    $event = \mod_whatsappmb\event\course_module_instance_list_viewed::create([
+        'context' => $coursecontext,
+        'courseid' => $course->id
+    ]);
+    $event->trigger();
+
+    // Update page settings for the specific course
+    $PAGE->set_context($coursecontext);
+    $PAGE->set_title($course->shortname . ': ' . get_string('pluginname', 'mod_whatsappmb'));
+    $PAGE->set_heading($course->fullname);
+
+    // Get all instances of WhatsAppMB in this course
+    $instances = get_all_instances_in_course('whatsappmb', $course);
+
+    if (!$instances) {
+        echo $OUTPUT->notification(get_string('noinstances', 'mod_whatsappmb'), 'notifyproblem');
+    } else {
+        $table = new html_table();
+        $table->head = [
+            get_string('name'),
+            get_string('description'),
+            get_string('lastmodified', 'mod_whatsappmb') // Nueva columna para la fecha
+        ];
+        $table->data = [];
+
+        foreach ($instances as $instance) {
+            $url = new moodle_url('/mod/whatsappmb/view.php', ['id' => $instance->coursemodule]);
+            $name = html_writer::link($url, format_string($instance->name));
+            $description = format_text($instance->intro, $instance->introformat);
+            // Formatear la fecha de última modificación
+            $lastmodified = userdate($instance->timemodified, get_string('strftimedatetime', 'langconfig'));
+            $table->data[] = [$name, $description, $lastmodified];
+        }
+
+        echo html_writer::table($table);
+    }
 } else {
-    // Display an error message if no valid ID is found.
-    echo $OUTPUT->header();
-    echo $OUTPUT->notification(get_string('invalidwhatsappid', 'mod_whatsappmb'), 'notifyproblem');
-    echo $OUTPUT->footer();
-    die();
+    // Case 2: No course ID provided, show all courses with WhatsAppMB instances
+    require_capability('moodle/site:viewparticipants', $systemcontext);
+
+    $sql = "SELECT c.id, c.fullname, c.shortname
+            FROM {course} c
+            JOIN {whatsappmb} w ON w.course = c.id
+            GROUP BY c.id, c.fullname, c.shortname
+            ORDER BY c.fullname";
+
+    $courses = $DB->get_records_sql($sql);
+
+    if (!$courses) {
+        echo $OUTPUT->notification(get_string('nocourses', 'mod_whatsappmb'), 'notifyproblem');
+    } else {
+        echo $OUTPUT->heading(get_string('courseswithwhatsappmb', 'mod_whatsappmb'), 2);
+        $table = new html_table();
+        $table->head = [get_string('coursename', 'mod_whatsappmb')];
+        $table->data = [];
+
+        foreach ($courses as $course) {
+            $url = new moodle_url('/mod/whatsappmb/index.php', ['id' => $course->id]);
+            $courselink = html_writer::link($url, format_string($course->fullname));
+            $table->data[] = [$courselink];
+        }
+
+        echo html_writer::table($table);
+    }
 }
+
+echo $OUTPUT->footer();

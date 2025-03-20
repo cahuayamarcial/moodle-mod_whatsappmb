@@ -24,17 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-/**
- * Adds a new instance of the WhatsAppMB activity.
- *
- * @param object $whatsappmb The data object containing instance details.
- * @param object|null $mform Optional form instance.
- * @return int The ID of the newly inserted record.
- */
 function whatsappmb_add_instance($whatsappmb, $mform = null) {
     global $DB;
 
-    // Ensure default values
     $whatsappmb->intro = $whatsappmb->intro ?? '';
     $whatsappmb->introformat = $whatsappmb->introformat ?? FORMAT_MOODLE;
     $whatsappmb->timecreated = time();
@@ -44,55 +36,31 @@ function whatsappmb_add_instance($whatsappmb, $mform = null) {
     $whatsappmb->message = $whatsappmb->message ?? '';
     $whatsappmb->grouplink = $whatsappmb->grouplink ?? '';
 
-    // Insert the new instance into the database
     return $DB->insert_record('whatsappmb', $whatsappmb);
 }
 
-/**
- * Updates an existing instance of the WhatsAppMB activity.
- *
- * @param object $whatsappmb The data object containing updated instance details.
- * @return bool True if the update was successful, false otherwise.
- */
 function whatsappmb_update_instance($whatsappmb) {
     global $DB;
 
-    // Ensure default values
     $whatsappmb->intro = $whatsappmb->intro ?? '';
     $whatsappmb->introformat = $whatsappmb->introformat ?? FORMAT_MOODLE;
     $whatsappmb->timemodified = time();
     $whatsappmb->id = $whatsappmb->instance;
 
-    // Update the existing record in the database
     return $DB->update_record('whatsappmb', $whatsappmb);
 }
 
-/**
- * Deletes an instance of the WhatsAppMB activity.
- *
- * @param int $id The ID of the instance to delete.
- * @return bool True if the deletion was successful, false otherwise.
- */
 function whatsappmb_delete_instance($id) {
     global $DB;
 
-    // Delete the instance from the database
     return $DB->delete_records('whatsappmb', ['id' => $id]);
 }
 
-/**
- * Retrieves course module information for display.
- *
- * @param object $coursemodule The course module object.
- * @return cached_cm_info Course module information including dynamic link handling.
- */
 function whatsappmb_get_coursemodule_info($coursemodule) {
     global $DB;
 
-    // Retrieve the WhatsAppMB instance from the database
     $whatsappmb = $DB->get_record('whatsappmb', ['id' => $coursemodule->instance], '*', MUST_EXIST);
 
-    // Create a new course module info object
     $info = new cached_cm_info();
     $info->name = $whatsappmb->name;
 
@@ -105,53 +73,43 @@ function whatsappmb_get_coursemodule_info($coursemodule) {
         $link = $whatsappmb->grouplink;
     }
 
-    // Set the onclick event to open the WhatsApp link in a new tab
-    $info->onclick = "window.open('$link', '_blank'); return false;";
+    // URL para registrar el evento usando view.php
+    $logurl = new moodle_url('/mod/whatsappmb/view.php', [
+        'id' => $coursemodule->id,
+        'logonly' => 1
+    ]);
+
+    // Usar fetch para registrar el evento en segundo plano y abrir WhatsApp
+    $info->onclick = "fetch('$logurl', { method: 'GET' }).catch(err => console.error('Error logging view: ', err)); window.open('$link', '_blank'); return false;";
 
     return $info;
 }
 
-/**
- * Indicates the features supported by the WhatsAppMB module.
- *
- * @param string $feature The feature to check.
- * @return bool|null True if supported, false if not, null if undefined.
- */
 function whatsappmb_supports($feature) {
     switch ($feature) {
         case FEATURE_IDNUMBER:
-            return true; // Allows identification numbers for course modules.
-
+            return true;
         case FEATURE_GROUPS:
         case FEATURE_GROUPINGS:
-            return false; // This module does not support groups.
-
+            return false;
         case FEATURE_MOD_INTRO:
-            return true; // Supports an introductory text.
-
+            return true;
         case FEATURE_COMPLETION_TRACKS_VIEWS:
-            return false; // Does not track views for completion.
-
+            return false;
         case FEATURE_GRADE_HAS_GRADE:
         case FEATURE_GRADE_OUTCOMES:
-            return false; // This module does not support grading.
-
+            return false;
         case FEATURE_MOD_ARCHETYPE:
-            return MOD_ARCHETYPE_OTHER; // Behaves as another type of activity, not just a resource.
-
+            return MOD_ARCHETYPE_OTHER;
         case FEATURE_BACKUP_MOODLE2:
-            return true; // Supports backup and restore in Moodle 2.
-
+            return true;
         case FEATURE_NO_VIEW_LINK:
-            return false; // Now requires a view page.
-
+            return false;
         case FEATURE_SHOW_DESCRIPTION:
-            return true; // Displays the description on the course page.
-
+            return true;
         case FEATURE_MOD_PURPOSE:
-            return MOD_PURPOSE_COMMUNICATION; // Categorized as a communication module.
-
+            return MOD_PURPOSE_COMMUNICATION;
         default:
-            return null; // For undefined features.
+            return null;
     }
 }
