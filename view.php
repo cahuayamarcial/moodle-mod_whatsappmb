@@ -31,6 +31,8 @@ $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
 $whatsappmb = $DB->get_record('whatsappmb', ['id' => $cm->instance], '*', MUST_EXIST);
 
 require_login($course, true, $cm);
+$context = context_module::instance($cm->id);
+require_capability('mod/whatsappmb:view', $context);
 
 // Determine whether to use a personal number or a group link
 if ($whatsappmb->linktype === 'personal') {
