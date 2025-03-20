@@ -21,7 +21,7 @@
  * @copyright 2025 Marcial Cahuaya | Marbot
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$plugin->version   = 2025030727;
+$plugin->version   = 2025032001;
 $plugin->requires  = 2016052300; // Minimum required Moodle version (3.1+).
 $plugin->component = 'mod_whatsappmb';
 $plugin->maturity  = MATURITY_STABLE;
