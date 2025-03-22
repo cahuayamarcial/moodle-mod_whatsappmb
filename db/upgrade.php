@@ -12,17 +12,16 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Version details for the mod_whatsappmb plugin.
+ * Capabilities definition for the mod_whatsappmb module in Moodle.
  *
  * @package   mod_whatsappmb
  * @copyright 2025 Marcial Cahuaya | Marbot
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$plugin->version   = 2025032101;
-$plugin->requires  = 2016052300; // Minimum required Moodle version (3.1+).
-$plugin->component = 'mod_whatsappmb';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.0.3';
+
+function xmldb_mod_whatsappcn_upgrade($oldversion) {
+    return true;
+}
