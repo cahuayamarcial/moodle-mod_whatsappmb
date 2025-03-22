@@ -22,6 +22,6 @@
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-function xmldb_mod_whatsappcn_upgrade($oldversion) {
+function xmldb_whatsappmb_upgrade($oldversion) {
     return true;
 }
