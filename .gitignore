@@ -1,0 +1,51 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies (local dev only)
+node_modules/
+vendor/
+
+# Build / dist
+dist/
+build/
+
+# Local config
+.env
+.env.local
+*.local
+
+# AI assistants / coding agents
+CLAUDE.md
+.claude/
+.cursor/
+.cursorrules
+.aider*
+.continue/
+.windsurf/
+.codeium/
+.github/copilot-instructions.md
+AGENTS.md
+GEMINI.md
+.aiderignore
+
+# Backups
+*.bak
+*.orig
+*.tmp

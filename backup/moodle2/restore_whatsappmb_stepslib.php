@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Defines the steps to restore the whatsappmb activity.
@@ -28,15 +28,12 @@ defined('MOODLE_INTERNAL') || die();
  * Class to define the steps for restoring the whatsappmb activity.
  */
 class restore_whatsappmb_activity_structure_step extends restore_activity_structure_step {
-
     /**
      * Defines the structure for restoring the whatsappmb activity.
      */
     protected function define_structure() {
         $paths = [];
         $paths[] = new restore_path_element('whatsappmb', '/activity/whatsappmb');
-
-        // Add more elements if your activity has sub-data, such as additional settings or files.
 
         return $this->prepare_activity_structure($paths);
     }
@@ -49,12 +46,12 @@ class restore_whatsappmb_activity_structure_step extends restore_activity_struct
     protected function process_whatsappmb($data) {
         global $DB;
 
-        // Convert to an object
+        // Convert to an object.
         $data = (object)$data;
-        $oldid = $data->id; // Old backup ID
+        $oldid = $data->id;
         $data->course = $this->get_courseid();
 
-        // Handle timestamps (if your table includes these fields)
+        // Apply date offsets to timestamps.
         if (isset($data->timecreated)) {
             $data->timecreated = $this->apply_date_offset($data->timecreated);
         }
@@ -62,13 +59,13 @@ class restore_whatsappmb_activity_structure_step extends restore_activity_struct
             $data->timemodified = $this->apply_date_offset($data->timemodified);
         }
 
-        // Insert into the database
+        // Insert into the database.
         $newitemid = $DB->insert_record('whatsappmb', $data);
 
-        // Apply activity instance mapping
+        // Apply activity instance mapping.
         $this->apply_activity_instance($newitemid);
 
-        // Save the relationship between the backup ID and the new ID
+        // Save the relationship between the backup id and the new id.
         $this->set_mapping('whatsappmb', $oldid, $newitemid, true);
     }
 

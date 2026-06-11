@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Defines the restore task for the whatsappmb activity.
@@ -30,7 +30,6 @@ require_once($CFG->dirroot . '/mod/whatsappmb/backup/moodle2/restore_whatsappmb_
  * Defines the restore task for the whatsappmb activity.
  */
 class restore_whatsappmb_activity_task extends restore_activity_task {
-
     /**
      * Defines the settings for the restore task.
      *

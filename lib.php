@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Library functions for the mod_whatsappmb plugin.
@@ -24,6 +24,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Add a new whatsappmb instance.
+ *
+ * @param stdClass $whatsappmb Submitted data from the form in mod_form.php.
+ * @param mod_whatsappmb_mod_form|null $mform The form instance (optional).
+ * @return int The id of the newly inserted whatsappmb record.
+ */
 function whatsappmb_add_instance($whatsappmb, $mform = null) {
     global $DB;
 
@@ -39,6 +46,12 @@ function whatsappmb_add_instance($whatsappmb, $mform = null) {
     return $DB->insert_record('whatsappmb', $whatsappmb);
 }
 
+/**
+ * Update an existing whatsappmb instance.
+ *
+ * @param stdClass $whatsappmb Submitted data from the form in mod_form.php.
+ * @return bool True on success.
+ */
 function whatsappmb_update_instance($whatsappmb) {
     global $DB;
 
@@ -50,41 +63,85 @@ function whatsappmb_update_instance($whatsappmb) {
     return $DB->update_record('whatsappmb', $whatsappmb);
 }
 
+/**
+ * Delete an existing whatsappmb instance.
+ *
+ * @param int $id The id of the whatsappmb instance to delete.
+ * @return bool True on success.
+ */
 function whatsappmb_delete_instance($id) {
     global $DB;
 
     return $DB->delete_records('whatsappmb', ['id' => $id]);
 }
 
+/**
+ * Add information about the course module to the cached information.
+ *
+ * The activity will always link to view.php (a standard internal redirect page)
+ * so that events, logs and completion tracking are handled server-side, without
+ * relying on JavaScript.
+ *
+ * @param stdClass $coursemodule The course module record.
+ * @return cached_cm_info|false Cached course module info or false on error.
+ */
 function whatsappmb_get_coursemodule_info($coursemodule) {
     global $DB;
 
-    $whatsappmb = $DB->get_record('whatsappmb', ['id' => $coursemodule->instance], '*', MUST_EXIST);
+    $whatsappmb = $DB->get_record('whatsappmb', ['id' => $coursemodule->instance], 'id, name, intro, introformat');
+    if (!$whatsappmb) {
+        return false;
+    }
 
     $info = new cached_cm_info();
     $info->name = $whatsappmb->name;
 
-    // Construct the WhatsApp link based on the type
-    if ($whatsappmb->linktype === 'personal') {
-        $number = $whatsappmb->whatsappnumber;
-        $message = urlencode($whatsappmb->message);
-        $link = "https://wa.me/{$number}?text={$message}";
-    } else {
-        $link = $whatsappmb->grouplink;
+    if ($coursemodule->showdescription) {
+        $info->content = format_module_intro('whatsappmb', $whatsappmb, $coursemodule->id, false);
     }
-
-    // URL para registrar el evento usando view.php
-    $logurl = new moodle_url('/mod/whatsappmb/view.php', [
-        'id' => $coursemodule->id,
-        'logonly' => 1
-    ]);
-
-    // Usar fetch para registrar el evento en segundo plano y abrir WhatsApp
-    $info->onclick = "fetch('$logurl', { method: 'GET' }).catch(err => console.error('Error logging view: ', err)); window.open('$link', '_blank'); return false;";
 
     return $info;
 }
 
+/**
+ * Mark the activity as viewed: trigger the viewed event and complete it for the user.
+ *
+ * @param stdClass $whatsappmb The whatsappmb record.
+ * @param stdClass $course The course record.
+ * @param stdClass $cm The course module record.
+ * @param context_module $context The module context.
+ * @return void
+ */
+function whatsappmb_view($whatsappmb, $course, $cm, $context) {
+    $event = \mod_whatsappmb\event\course_module_viewed::create([
+        'objectid' => $whatsappmb->id,
+        'context' => $context,
+        'courseid' => $course->id,
+    ]);
+    $event->add_record_snapshot('course', $course);
+    $event->add_record_snapshot('whatsappmb', $whatsappmb);
+    $event->trigger();
+
+    $completion = new completion_info($course);
+    $completion->set_module_viewed($cm);
+}
+
+/**
+ * Indicates the features supported by this module.
+ *
+ * @uses FEATURE_IDNUMBER
+ * @uses FEATURE_GROUPS
+ * @uses FEATURE_GROUPINGS
+ * @uses FEATURE_MOD_INTRO
+ * @uses FEATURE_COMPLETION_TRACKS_VIEWS
+ * @uses FEATURE_GRADE_HAS_GRADE
+ * @uses FEATURE_GRADE_OUTCOMES
+ * @uses FEATURE_BACKUP_MOODLE2
+ * @uses FEATURE_SHOW_DESCRIPTION
+ * @uses FEATURE_MOD_PURPOSE
+ * @param string $feature FEATURE_xx constant for requested feature.
+ * @return mixed True if the feature is supported, null if unknown.
+ */
 function whatsappmb_supports($feature) {
     switch ($feature) {
         case FEATURE_IDNUMBER:
@@ -95,7 +152,7 @@ function whatsappmb_supports($feature) {
         case FEATURE_MOD_INTRO:
             return true;
         case FEATURE_COMPLETION_TRACKS_VIEWS:
-            return false;
+            return true;
         case FEATURE_GRADE_HAS_GRADE:
         case FEATURE_GRADE_OUTCOMES:
             return false;

@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Defines the steps to backup the whatsappmb activity.
@@ -28,7 +28,6 @@ defined('MOODLE_INTERNAL') || die();
  * Defines the structure for backing up the whatsappmb activity.
  */
 class backup_whatsappmb_activity_structure_step extends backup_activity_structure_step {
-
     /**
      * Defines the backup structure.
      *
@@ -38,7 +37,7 @@ class backup_whatsappmb_activity_structure_step extends backup_activity_structur
         // Define the root element describing the activity.
         $whatsappmb = new backup_nested_element('whatsappmb', ['id'], [
             'course', 'name', 'intro', 'introformat', 'linktype',
-            'whatsappnumber', 'message', 'grouplink', 'timecreated', 'timemodified'
+            'whatsappnumber', 'message', 'grouplink', 'timecreated', 'timemodified',
         ]);
 
         // Set the source table for the backup.

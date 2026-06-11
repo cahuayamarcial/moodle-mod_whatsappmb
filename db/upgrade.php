@@ -8,20 +8,28 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Capabilities definition for the mod_whatsappmb module in Moodle.
+ * Database upgrade steps for the mod_whatsappmb plugin.
  *
  * @package   mod_whatsappmb
  * @copyright 2025 Marcial Cahuaya | Marbot
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Run database upgrade steps for mod_whatsappmb.
+ *
+ * @param int $oldversion The version we are upgrading from.
+ * @return bool True on success.
+ */
 function xmldb_whatsappmb_upgrade($oldversion) {
     return true;
 }

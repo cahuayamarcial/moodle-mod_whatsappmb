@@ -8,21 +8,22 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Redirects users to a WhatsApp link.
+ * Redirects users to the WhatsApp link configured for this activity.
  *
  * @package   mod_whatsappmb
  * @copyright 2025 Marcial Cahuaya | Marbot
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once('../../config.php');
-require_once('lib.php');
+
+require_once(__DIR__ . '/../../config.php');
+require_once(__DIR__ . '/lib.php');
 
 $id = required_param('id', PARAM_INT);
 
@@ -34,28 +35,22 @@ require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 require_capability('mod/whatsappmb:view', $context);
 
-// Log the course module view
-$event = \mod_whatsappmb\event\course_module_viewed::create([
-    'objectid' => $whatsappmb->id,
-    'context' => $context,
-    'courseid' => $course->id
-]);
-$event->add_record_snapshot('course', $course);
-$event->add_record_snapshot('whatsappmb', $whatsappmb);
-$event->trigger();
+$PAGE->set_url('/mod/whatsappmb/view.php', ['id' => $cm->id]);
 
-// Determine whether to use a personal number or a group link
+// Trigger the viewed event and update completion state.
+whatsappmb_view($whatsappmb, $course, $cm, $context);
+
+// Build the target WhatsApp URL based on the configured link type.
 if ($whatsappmb->linktype === 'personal') {
     $number = trim($whatsappmb->whatsappnumber);
     $message = urlencode(trim($whatsappmb->message));
     $whatsapplink = "https://wa.me/{$number}?text={$message}";
 } else {
     $grouplink = trim($whatsappmb->grouplink);
-    if (!preg_match("~^(?:f|ht)tps?://~i", $grouplink)) {
-        $grouplink = "https://" . $grouplink;
+    if (!preg_match('~^https?://~i', $grouplink)) {
+        $grouplink = 'https://' . $grouplink;
     }
     $whatsapplink = $grouplink;
 }
 
-// Redirect to the WhatsApp link in the same tab
 redirect($whatsapplink);

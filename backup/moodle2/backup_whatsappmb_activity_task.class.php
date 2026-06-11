@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Defines the backup task for the whatsappmb activity.
@@ -30,7 +30,6 @@ require_once($CFG->dirroot . '/mod/whatsappmb/backup/moodle2/backup_whatsappmb_s
  * Class to define the backup task for the whatsappmb activity.
  */
 class backup_whatsappmb_activity_task extends backup_activity_task {
-
     /**
      * Defines the settings for the backup task.
      */
@@ -52,7 +51,7 @@ class backup_whatsappmb_activity_task extends backup_activity_task {
      * @param string $content The content to encode.
      * @return string The encoded content.
      */
-    static public function encode_content_links($content) {
+    public static function encode_content_links($content) {
         global $CFG;
 
         // Define the base URL for the activity.
@@ -60,11 +59,11 @@ class backup_whatsappmb_activity_task extends backup_activity_task {
 
         // Encode links to the view.php page.
         $pattern = "#(" . $base . "/view\.php\?id=)([0-9]+)#";
-        $content = preg_replace($pattern, '$@WHATSMAPPVIEWBYID*$2@$', $content);
+        $content = preg_replace($pattern, '$@WHATSAPPMBVIEWBYID*$2@$', $content);
 
         // Encode links to the index.php page.
         $pattern = "#(" . $base . "/index\.php\?id=)([0-9]+)#";
-        $content = preg_replace($pattern, '$@WHATSMAPPINDEX*$2@$', $content);
+        $content = preg_replace($pattern, '$@WHATSAPPMBINDEX*$2@$', $content);
 
         return $content;
     }

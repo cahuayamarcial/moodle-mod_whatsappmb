@@ -8,45 +8,39 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * English language strings for the WhatsApp by Marbot plugin.
+ * English language strings for the mod_whatsappmb plugin.
  *
  * @package   mod_whatsappmb
  * @copyright 2025 Marcial Cahuaya | Marbot
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 $string['pluginname'] = 'WhatsApp by Marbot';
 $string['modulename'] = 'WhatsApp';
 $string['modulenameplural'] = 'WhatsApps';
-$string['whatsappmbname'] = 'WhatsApp activity name';
-$string['pluginadministration'] = 'WhatsApp Administration';
+$string['pluginadministration'] = 'WhatsApp administration';
 
-$string['whatsappnumber'] = 'WhatsApp Number';
-$string['message'] = 'Default Message';
-$string['linktype'] = 'Link Type';
-$string['personalnumber'] = 'Personal Number';
-$string['grouplink'] = 'Group Link';
-$string['invalidnumber'] = 'Please enter a valid phone number in international format (e.g., +1234567890).';
-$string['invalidgrouplink'] = 'Please enter a valid WhatsApp group link (e.g., https://chat.whatsapp.com/XXXXXXX).';
+$string['whatsappnumber'] = 'WhatsApp number';
+$string['message'] = 'Default message';
+$string['linktype'] = 'Link type';
+$string['personalnumber'] = 'Personal number';
+$string['grouplink'] = 'Group link';
+$string['invalidnumber'] = 'Please enter a valid phone number in international format (for example, +1234567890).';
+$string['invalidgrouplink'] = 'Please enter a valid WhatsApp group link (for example, https://chat.whatsapp.com/XXXXXXX).';
 
 $string['whatsappmb:addinstance'] = 'Add a new WhatsApp instance';
 $string['whatsappmb:view'] = 'View WhatsApp';
 
-$string['invalidwhatsappid'] = 'Invalid WhatsApp activity. Please contact your instructor.';
 $string['noinstances'] = 'There are no WhatsApp instances in this course.';
-$string['nocourses'] = 'There are no courses with WhatsApp instances.';
-$string['courseswithwhatsappmb'] = 'Courses with WhatsApp instances';
-$string['coursename'] = 'Course name';
-
 $string['lastmodified'] = 'Last modified';
 
-$string['privacy:metadata:none'] = 'This plugin does not store personal information.';
-
-$string['required'] = 'This field is required.';
+$string['privacy:metadata:none'] = 'The WhatsApp by Marbot plugin does not store any personal data.';
