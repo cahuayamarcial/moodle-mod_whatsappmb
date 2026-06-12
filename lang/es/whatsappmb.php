@@ -40,6 +40,7 @@ $string['invalidgrouplink'] = 'Por favor, ingrese un enlace válido de grupo de 
 $string['whatsappmb:addinstance'] = 'Agregar una nueva instancia de WhatsApp';
 $string['whatsappmb:view'] = 'Ver WhatsApp';
 
+$string['openwhatsapp'] = 'Abrir WhatsApp';
 $string['noinstances'] = 'No hay instancias de WhatsApp en este curso.';
 $string['lastmodified'] = 'Última modificación';
 

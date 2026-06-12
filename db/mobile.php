@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Version details for the mod_whatsappmb plugin.
+ * Moodle Mobile App addon registration for mod_whatsappmb.
  *
  * @package   mod_whatsappmb
  * @copyright 2025 Marcial Cahuaya | Marbot
@@ -24,8 +24,22 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2025061103;
-$plugin->requires  = 2022112800;
-$plugin->component = 'mod_whatsappmb';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.1.0';
+$addons = [
+    'mod_whatsappmb' => [
+        'handlers' => [
+            'view' => [
+                'displaydata' => [
+                    'title' => 'pluginname',
+                    'icon' => '/mod/whatsappmb/pix/icon.svg',
+                    'class' => '',
+                ],
+                'delegate' => 'CoreCourseModuleDelegate',
+                'method' => 'mobile_course_view',
+            ],
+        ],
+        'lang' => [
+            ['pluginname', 'mod_whatsappmb'],
+            ['openwhatsapp', 'mod_whatsappmb'],
+        ],
+    ],
+];
