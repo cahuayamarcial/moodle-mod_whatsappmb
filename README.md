@@ -1,74 +1,94 @@
-# 📲 Moodle WhatsApp Module (`moodle-mod_whatsapp`)
+# WhatsApp by Marbot — Moodle activity module
 
-🚀 **Easily integrate WhatsApp links into Moodle courses!**  
-This plugin allows teachers to add **WhatsApp contact numbers** or **group links**, so students can join or message directly with a single click.
+[![Moodle](https://img.shields.io/badge/Moodle-4.1%2B-orange)](https://moodle.org)
+[![License](https://img.shields.io/badge/license-GPL%20v3-blue)](LICENSE)
+[![Release](https://img.shields.io/badge/release-1.0.4-green)](https://github.com/cahuayamarcial/moodle-mod_whatsappmb/releases)
 
----
+Adds a **WhatsApp activity** to Moodle courses. Teachers configure either a personal contact number (with optional pre-filled message) or a group invite link, and students join the conversation with a single click — directly from the course page.
 
-## 🖼️ Preview  
+![Preview](https://img001.prntscr.com/file/img001/V0zqdx7-RGmdMdkGdGj80A.gif)
 
-Here’s how the plugin looks inside Moodle:  
+## Features
 
-![WhatsApp Moodle Plugin](https://img001.prntscr.com/file/img001/V0zqdx7-RGmdMdkGdGj80A.gif)  
+- **Personal contact** — WhatsApp number with optional default message that opens the chat pre-filled
+- **Group invite** — Direct link to a WhatsApp group
+- **Server-side redirect** — Uses `view.php`; no inline JavaScript, no popup blockers
+- **Activity logs** — Triggers the `course_module_viewed` event for analytics and reporting
+- **Completion tracking** — Supports "complete when viewed"
+- **Backup & restore** — Full Moodle 2 backup/restore support
+- **Privacy** — Stores no personal data (`null_provider`)
+- **i18n** — English and Spanish
 
----
+## Requirements
 
-## 📥 Installation  
+| Component | Version |
+|---|---|
+| Moodle  | 4.1 or newer |
+| PHP     | 7.4 or newer |
 
-### 1️⃣ **Install via Moodle Plugin Manager (Recommended)**
-1. **Download the ZIP file**:  
-   - [Click here to download](https://github.com/cahuayamarcial/moodle-mod_whatsapp/releases/latest).  
-2. Go to **Site Administration** → **Plugins** → **Install plugins**.  
-3. Upload the **ZIP file** and follow Moodle's installation process.
+## Installation
 
-### 2️⃣ **Manual Installation**
-1. **Download the ZIP file**:  
-   - [Click here to download](https://github.com/cahuayamarcial/moodle-mod_whatsapp/releases/latest).  
-2. Extract the folder **`whatsappmb`** and upload it to **`moodle/mod/`** on your server.  
-3. Go to **Site Administration** → **Notifications** and complete the installation.
+### From the Moodle Plugins directory (recommended)
 
----
+1. Site administration → Plugins → Install plugins
+2. Search for **WhatsApp by Marbot** and install
+3. Run the upgrade
 
-## ⚙️ How to Use  
+### From ZIP
 
-1. **Add a "WhatsApp" activity** in a Moodle course.  
-2. Choose between:  
-   - **Personal Contact** → Add a WhatsApp number (optional message).  
-   - **Group Link** → Provide a WhatsApp group invite link.  
-3. Save the activity, and students can now **click to open WhatsApp** instantly!
+1. Download the latest release: [github.com/cahuayamarcial/moodle-mod_whatsappmb/releases](https://github.com/cahuayamarcial/moodle-mod_whatsappmb/releases/latest)
+2. Site administration → Plugins → Install plugins → Upload the ZIP
 
----
+### Manual
 
-## 📌 Changelog (Version History)  
+```sh
+cd moodle/mod
+git clone https://github.com/cahuayamarcial/moodle-mod_whatsappmb.git whatsappmb
+```
 
-### 🆕 Version 1.0.0 (Initial Release)  
-- First stable version of the **Moodle WhatsApp Module**.  
-- Features:  
-  - Add a personal WhatsApp contact with a predefined message.  
-  - Add a WhatsApp group invite link.  
-  - Easy integration with Moodle activities.
+Then run Site administration → Notifications.
 
----
-## 🛠️ For Developers  
+## Usage
 
-Want to contribute?  
-- Fork this repository  
-- Clone it:  
-  ```sh
-  git clone https://github.com/cahuayamarcial/moodle-mod_whatsapp.git
-  
----
+1. Turn editing on in a course → **Add an activity or resource** → **WhatsApp**
+2. Pick **Link type**:
+   - *Personal number*: enter a phone number in international format (e.g. `+59171502211`) and an optional default message
+   - *Group link*: paste a WhatsApp group invite (`https://chat.whatsapp.com/...`)
+3. Save — students see a clickable activity that opens WhatsApp Web or the WhatsApp app
 
-## 📜 License  
+## Capabilities
 
-This plugin is licensed under **GNU GPL v3**.  
-See the full license details in the [`LICENSE`](LICENSE) file.
+| Capability                       | Role default              |
+|----------------------------------|---------------------------|
+| `mod/whatsappmb:addinstance`     | Editing teacher, Manager  |
+| `mod/whatsappmb:view`            | All users                 |
 
----
+## Changelog
 
-## 📩 Support & Contact  
+### 1.0.4
 
-For issues or suggestions, please open an **[issue](https://github.com/cahuayamarcial/moodle-mod_whatsapp/issues)** on GitHub.
+- Removed inline JavaScript from `whatsappmb_get_coursemodule_info`; replaced with a clean server-side redirect via `view.php`
+- Added `whatsappmb_view()` helper that triggers the viewed event and updates completion state
+- Enabled `FEATURE_COMPLETION_TRACKS_VIEWS`
+- `index.php` now follows the standard `mod_*` convention
+- Fixed backup placeholder typo that prevented link decoding on restore
+- Added missing GPL headers and PHPDoc across all classes and functions
+- Translated all comments to English
+- Bumped minimum supported Moodle to 4.1
+- Plugin passes `phpcs --standard=moodle` with zero errors
 
-🔗 **Created by:** Marcial Cahuaya | Marbot 
+### 1.0.0
 
+- Initial release
+- Personal contact with pre-filled message
+- Group invite link
+
+## License
+
+GNU GPL v3 — see [LICENSE](LICENSE).
+
+## Author
+
+**Marcial Cahuaya** ([Marbot](https://github.com/cahuayamarcial))
+
+Issues and suggestions: [github.com/cahuayamarcial/moodle-mod_whatsappmb/issues](https://github.com/cahuayamarcial/moodle-mod_whatsappmb/issues)
