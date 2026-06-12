@@ -86,7 +86,7 @@ function whatsappmb_delete_instance($id) {
  * @return cached_cm_info|false Cached course module info or false on error.
  */
 function whatsappmb_get_coursemodule_info($coursemodule) {
-    global $DB;
+    global $CFG, $DB;
 
     $whatsappmb = $DB->get_record('whatsappmb', ['id' => $coursemodule->instance], 'id, name, intro, introformat');
     if (!$whatsappmb) {
@@ -99,6 +99,12 @@ function whatsappmb_get_coursemodule_info($coursemodule) {
     if ($coursemodule->showdescription) {
         $info->content = format_module_intro('whatsappmb', $whatsappmb, $coursemodule->id, false);
     }
+
+    // Open view.php in a new tab so the current course page stays in place.
+    // view.php still performs the event trigger, completion update and final
+    // redirect to WhatsApp on the server side.
+    $fullurl = $CFG->wwwroot . '/mod/whatsappmb/view.php?id=' . $coursemodule->id;
+    $info->onclick = "window.open('" . addslashes_js($fullurl) . "'); return false;";
 
     return $info;
 }
